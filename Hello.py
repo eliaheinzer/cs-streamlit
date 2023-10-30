@@ -17,7 +17,6 @@ from streamlit.logger import get_logger
 
 LOGGER = get_logger(__name__)
 
-##test
 
 def run():
     st.set_page_config(
