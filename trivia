@@ -9,7 +9,7 @@ st.title("Welcome to TRIVIA HERO")
 st.header ("A fun game to expand your knowledge")
 
 
-st.session_state['category'] = st.selectbox("Pick a category:", ["animals", "general knowledge", "cars"], index=0, key='category_select')
+st.session_state['category'] = st.selectbox("Pick a category:", ["9", "10", "11"], index=0, key='category_select')
 st.session_state['difficulty'] = st.selectbox("Pick a difficulty:", ["easy", "medium", "hard"], index=0, key='difficulty_select')
 
 
