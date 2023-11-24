@@ -18,5 +18,9 @@ start_game = st.button("CLICK HERE TO START THE GAME")
 if start_game:
     category = st.session_state["category"]
     difficulty = st.session_state["difficulty"]
-    
-    get_question(category, difficulty)
+
+    api_result = get_question(category, difficulty)
+    question = api_result[0]
+    correct_answer = api_result[2]
+    answers = api_result[1]
+    answers.append(correct_answer)
