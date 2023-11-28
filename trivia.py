@@ -30,6 +30,11 @@ if start_game:
     answers = api_result[1]
     answers.append(correct_answer)
 
+
+     st.subheader(question)
+    
+    random.shuffle(answers)
+
     if 'selected_answer' not in st.session_state:
         st.session_state['selected_answer'] = None
 
