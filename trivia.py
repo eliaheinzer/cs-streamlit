@@ -30,6 +30,25 @@ if start_game:
     answers = api_result[1]
     answers.append(correct_answer)
 
+    if 'selected_answer' not in st.session_state:
+        st.session_state['selected_answer'] = None
+
+    for ans in answers:
+        if st.button(ans, key=ans):
+            st.session_state['selected_answer'] = ans
+            break  # Break after a button is clicked
+
+    #mehrere Probleme: streamlit führt die seite jeweils neu aus nachdem etwas geklickt wird. (machbar aber kompliziert mit session_state
+                    #hauptproblem: sobald ein knopf gedrückt wird wird nicht wie geplant etwas angezeigt sondern das spiel wird zurück gesetzt. 
+                    
+    
+    if st.session_state['selected_answer'] is not None:  
+        if st.session_state['selected_answer'] == correct_answer:
+            st.write("Correct Answer! Congrats!")
+        else:
+            st.write("Wrong, GAME OVER!")
+
+
 if correct_answer:
     score += 1
 
