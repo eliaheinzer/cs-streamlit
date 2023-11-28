@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 from api import get_question
+import random
 
 
 st.set_page_config(page_title="TRIVIA HERO", page_icon=":blue_heart:", layout="wide")
@@ -14,7 +15,7 @@ st.session_state['difficulty'] = st.selectbox("Pick a difficulty:", ["easy", "me
 
 
 start_game = st.button("CLICK HERE TO START THE GAME")
-game_over = #muss noch definiert werden
+#game_over = #muss noch definiert werden
 
 if start_game:
     category = st.session_state["category"]
@@ -26,12 +27,12 @@ if start_game:
     api_result = get_question(category, difficulty)
     question = api_result[0]
     correct_answer = api_result[2]
-    wrong_answer = #muss noch definiert werden
+    #wrong_answer = #muss noch definiert werden
     answers = api_result[1]
     answers.append(correct_answer)
 
 
-     st.subheader(question)
+    st.subheader(question)
     
     random.shuffle(answers)
 
@@ -53,12 +54,3 @@ if start_game:
         else:
             st.write("Wrong, GAME OVER!")
 
-
-if correct_answer:
-    score += 1
-
-if wrong_answer:
-    lives -= 1
-
-if lives = 0:
-    game_over
