@@ -7,12 +7,12 @@ import random
 st.set_page_config(page_title="TRIVIA HERO", page_icon=":blue_heart:", layout="wide")
 
 st.title("Welcome to TRIVIA HERO")
-st.header ("A fun game to expand your knowledge")
+st.header (f"A fun game to expand your knowledge.")
 
 
 st.session_state['category'] = st.selectbox("Pick a category:", ["9", "10", "11"], index=0, key='category_select')
 st.session_state['difficulty'] = st.selectbox("Pick a difficulty:", ["easy", "medium", "hard"], index=0, key='difficulty_select')
-
+st.session_state['highscore'] = 0
 
 #start_game = st.button("CLICK HERE TO START THE GAME")
 
@@ -24,57 +24,72 @@ st.session_state['difficulty'] = st.selectbox("Pick a difficulty:", ["easy", "me
         # DELETE THIS CODE, JUST FOR TESTING!!!
         # DELETE THIS CODE, JUST FOR TESTING!!!
 
-def fetch_new_question():
+def get_new_question():
     category = st.session_state["category"]
     difficulty = st.session_state["difficulty"]
+
+    #importing the results from the api
     api_result = get_question(category, difficulty)
     st.session_state["question"] = api_result[0]
     st.session_state["answers"] = api_result[1] + [api_result[2]]
     st.session_state["correct_answer"] = api_result[2]
+
+    #getting rid of the fixed order
     random.shuffle(st.session_state["answers"])
     st.session_state['selected_answer'] = None
 
 def display_question():
     st.subheader(st.session_state["question"])
+
+    #listing out the answers
     for ans in st.session_state["answers"]:
         if st.button(ans, key=ans):
             st.session_state['selected_answer'] = ans
             return True  # A button was clicked
-    return False  # No button was clicked
+    return False  # No button was clicked, does not check the answer
 
 def process_answer():
+    #Check if answer is correct
     if st.session_state['selected_answer'] == st.session_state["correct_answer"]:
         st.write("Correct Answer! Congrats!")
         st.session_state['score'] += 1
+        get_new_question()
+    #subtract a live if answer is wrong
     else:
-        st.write("Wrong, GAME OVER!")
         st.session_state['lives'] -= 1
+        st.write(f"Wrong, you have {st.session_state['lives']} lives left!")
+            #if there are no lives left in this session end this round otherwise restart
+        if st.session_state['lives'] <= 0:
+            st.write(f"Final Score: {st.session_state['score']}")
 
-    if st.session_state['lives'] <= 0:
-        st.write(f"Final Score: {st.session_state['score']}")
-        st.session_state['start_game'] = False
-    else:
-        fetch_new_question()  # Fetch a new question for the next round
+            #Check if a new highscore is achieved and congratulate if done
+            if st.session_state['score'] > st.session_state['highscore']:
+                st.session_state['highscore'] = st.session_state['score']
+                st.write(f"Congratulations you have a new Highscore. Your new Highscore is: {st.session_state['highscore']}")
+            st.session_state['start_game'] = False
+        else:
+            get_new_question() #get a new question
 
 # Initialize session state keys
 if 'start_game' not in st.session_state:
     st.session_state['start_game'] = False
-    st.session_state['category'] = "General Knowledge"
-    st.session_state['difficulty'] = "Easy"
     st.session_state['lives'] = 3
     st.session_state['score'] = 0
     st.session_state['selected_answer'] = None
 
 if st.button("Start Game"):
+    #giving the player the starting lives and resetting the score
     st.session_state['start_game'] = True
     st.session_state['lives'] = 3
     st.session_state['score'] = 0
-    fetch_new_question()
+    #get question
+    get_new_question()
 
+#actual process of the code starts
 if st.session_state['start_game']:
     if 'question' in st.session_state:
         if display_question():
-            process_answer()
+                process_answer()
 
 
         # DELETE THIS CODE, JUST FOR TESTING!!!
