@@ -3,12 +3,27 @@ import requests
 from api import get_question
 import random
 
+#Page set up and Title
 
 st.set_page_config(page_title="TRIVIA HERO", page_icon=":blue_heart:", layout="wide")
 
-st.title("Welcome to TRIVIA HERO")
-st.header (f"A fun game to expand your knowledge.")
+st.markdown("<h1 style='text-align: center; color: orange;'>Welcome to TRIVIA HERO!</h1>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align: center; color: yellow;'>A fun game to expand your knowledge</h4>", unsafe_allow_html=True)
 
+#player name
+player_name = st.text_input("Enter your name:")
+
+if player_name:
+    st.write(f"Welcome {player_name}! If you want to listen to music while playing, click this button:")  
+
+    #Music Imput
+    audio="music.mp3"
+    if st.button("play music"):
+        st.audio(audio)
+    
+
+    
+#choose a category   
 
 st.session_state['category'] = st.selectbox("Pick a category:", ["9", "10", "11"], index=0, key='category_select')
 st.session_state['difficulty'] = st.selectbox("Pick a difficulty:", ["easy", "medium", "hard"], index=0, key='difficulty_select')
@@ -40,12 +55,15 @@ def get_new_question():
 
 def display_question():
     st.subheader(st.session_state["question"])
-
+    
+    cols = st.columns(4)
+    
     #listing out the answers
-    for ans in st.session_state["answers"]:
-        if st.button(ans, key=ans):
-            st.session_state['selected_answer'] = ans
-            return True  # A button was clicked
+    for idx, ans in enumerate(st.session_state["answers"]):
+        with cols[idx]:
+            if st.button(ans, key=ans):
+                st.session_state['selected_answer'] = ans
+                return True  # A button was clicked
     return False  # No button was clicked, does not check the answer
 
 def process_answer():
@@ -78,7 +96,7 @@ if 'start_game' not in st.session_state:
     st.session_state['selected_answer'] = None
 
 if st.button("Start Game"):
-    #giving the player the starting lives and resetting the score
+    #giving the player the starting lives and resetting the score 
     st.session_state['start_game'] = True
     st.session_state['lives'] = 3
     st.session_state['score'] = 0
@@ -133,6 +151,11 @@ if st.session_state['start_game']:
 #         if st.session_state['selected_answer'] is not None:  
 #             if st.session_state['selected_answer'] == correct_answer:
 #                 st.write("Correct Answer! Congrats!")
+
+#             else:
+#                 st.write("Wrong, GAME OVER!")
+
+
 
 #             else:
 #                 st.write("Wrong, GAME OVER!")
