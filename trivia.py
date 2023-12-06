@@ -27,7 +27,12 @@ if player_name:
 
 st.session_state['category'] = st.selectbox("Pick a category:", ["9", "10", "11"], index=0, key='category_select')
 st.session_state['difficulty'] = st.selectbox("Pick a difficulty:", ["easy", "medium", "hard"], index=0, key='difficulty_select')
-st.session_state['highscore'] = 0
+if "highscore" not in st.session_state:
+    st.session_state["highscore"] = 0
+
+if 'score' not in st.session_state:
+    st.session_state['score']= 0
+
 
 #start_game = st.button("CLICK HERE TO START THE GAME")
 
@@ -108,6 +113,11 @@ if st.session_state['start_game']:
     if 'question' in st.session_state:
         if display_question():
                 process_answer()
+
+
+#Display score and highscore
+st.write(f'Your score:{st.session_state["score"]}')
+st.write(f'Your Highscore is:{st.session_state["highscore"]}')
 
 
         # DELETE THIS CODE, JUST FOR TESTING!!!
