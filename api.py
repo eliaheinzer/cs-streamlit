@@ -38,4 +38,4 @@ def get_question(difficulty, category):
     return trivia_packet
     #example response:('Who painted The Starry Night?',['Pablo Picasso', 'Leonardo da Vinci', 'Michelangelo'],'Vincent van Gogh')
 
-#example call of the function: get_question(25,"easy")
+#example call of the function: get_question("easy", 25)
