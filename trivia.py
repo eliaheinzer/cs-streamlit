@@ -25,7 +25,7 @@ if player_name:
     
 #choose a category   
 
-st.session_state['category'] = st.selectbox("Pick a category:", ["9", "10", "25"], index=0, key='category_select')
+st.session_state['category'] = st.selectbox("Pick a category:", ["9", "10", "random"], index=0, key='category_select')
 st.session_state['difficulty'] = st.selectbox("Pick a difficulty:", ["easy", "medium", "hard"], index=0, key='difficulty_select')
 if "highscore" not in st.session_state:
     st.session_state["highscore"] = 0
@@ -37,11 +37,14 @@ if 'score' not in st.session_state:
 
 def get_new_question():
     category = st.session_state["category"]
+    if category == "random":
+        category = None
+
     difficulty = st.session_state["difficulty"]
 
     #importing the results from the api if all the current questions are used
     if st.session_state['question_counter'] == 0:
-        st.session_state['api_result'] = get_question(category, difficulty)
+        st.session_state['api_result'] = get_question(difficulty, category)
 
     #breaking up the results packet
     current_question_packet = st.session_state['api_result'][st.session_state['question_counter']]

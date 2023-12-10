@@ -3,13 +3,17 @@ import html
 #the api gives otherwise weird looking answers
 
 
-def get_question(category, difficulty):
+def get_question(difficulty, category):
     #getting 5 questions at the time so the request delay is not a problem
     amount = 5
     trivia_packet = []
     #if the question type is changed than the answer extraction needs an update
     #the category type is a number not the name
-    params ={"amount":amount,"category":category,"difficulty":difficulty, "type":"multiple"}
+    params ={"amount":amount,"difficulty":difficulty, "type":"multiple"}
+    
+    #giving the possibility that category is none which returns random questions
+    if category is not None:
+        params["category"] = category
     url ="https://opentdb.com/api.php?"
     api_answer = requests.get(url, params = params)
     
