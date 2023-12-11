@@ -47,7 +47,7 @@ def get_new_question():
         st.session_state['api_result'] = get_question(difficulty, category)
         #Informing user about trying again
         if st.session_state['api_result'] == False:
-            st.write("You were too fast, try again")
+            st.error("You were too fast, try again")
             return
 
     #breaking up the results packet
