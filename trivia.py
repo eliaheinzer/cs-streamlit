@@ -45,6 +45,10 @@ def get_new_question():
     #importing the results from the api if all the current questions are used
     if st.session_state['question_counter'] == 0:
         st.session_state['api_result'] = get_question(difficulty, category)
+        #Informing user about trying again
+        if st.session_state['api_result'] == False:
+            st.write("You were too fast, try again")
+            return
 
     #breaking up the results packet
     current_question_packet = st.session_state['api_result'][st.session_state['question_counter']]

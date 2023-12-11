@@ -19,7 +19,10 @@ def get_question(difficulty, category):
     
     #unpacking the json
     answer = api_answer.json()
-    
+
+    #Fail-safe if user is faster than the 5 second delay
+    if answer['response_code'] == 5:
+        return False
     #changing the element in to a readable result and distributing each in a tuple
     for i in range(0,amount):
         question_with_html = answer['results'][i]['question']
