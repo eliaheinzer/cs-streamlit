@@ -60,7 +60,7 @@ if 'score' not in st.session_state:
 
 
 def get_new_question():
-    category = st.session_state["category"]
+    category = st.session_state["category"]["id"]
     if category == "random":
         category = None
 
