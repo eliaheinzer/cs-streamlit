@@ -25,13 +25,37 @@ if player_name:
     
 #choose a category   
 
-st.session_state['category'] = st.selectbox("Pick a category:", ["9", "10", "random"], index=0, key='category_select')
+def get_random_categories():
+    url = "https://opentdb.com/api_category.php"
+    response = requests.get(url)
+    categories = response.json()['trivia_categories']
+    return random.sample(categories, 4)
+
+if 'start_game' not in st.session_state:
+    st.session_state['start_game'] = False
+    
+if 'selected_categories'not in st.session_state or not st.session_state['start_game']:
+    st.session_state['selected_categories'] = get_random_categories()
+    st.session_state['start_game'] = True
+
+        
+if 'category' not in st.session_state:
+    st.session_state['category'] = None 
+           
+                
+st.session_state ['category'] = st.selectbox("Pick a category:", options=st.session_state['selected_categories'], format_func=lambda x: x['name'], index=0, key='category_select')
+
+if st.session_state['category']:
+    st.write(f"You've selected category: {st.session_state['category']['name']}")
+
 st.session_state['difficulty'] = st.selectbox("Pick a difficulty:", ["easy", "medium", "hard"], index=0, key='difficulty_select')
+
 if "highscore" not in st.session_state:
     st.session_state["highscore"] = 0
 
 if 'score' not in st.session_state:
     st.session_state['score']= 0
+
 
 
 
