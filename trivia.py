@@ -29,7 +29,10 @@ def get_random_categories():
     url = "https://opentdb.com/api_category.php"
     response = requests.get(url)
     categories = response.json()['trivia_categories']
+    categories.append({'id':None, 'name':'random'})
     return random.sample(categories, 4)
+          
+                      
 
 if 'start_game' not in st.session_state:
     st.session_state['start_game'] = False
@@ -57,7 +60,11 @@ if 'score' not in st.session_state:
     st.session_state['score']= 0
 
 
-
+def get_question_for_random_category(category):
+    if category is None:
+        random_category = random.choice(st.session_state['selected_categories'])
+        category = random_category['id']
+                      
 
 def get_new_question():
     category = st.session_state["category"]["id"]
