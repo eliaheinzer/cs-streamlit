@@ -21,8 +21,6 @@ if player_name:
     if st.button("play music"):
         st.audio(audio)
     
-
-    
 #choose a category   
 
 def get_random_categories():
@@ -31,17 +29,14 @@ def get_random_categories():
     categories = response.json()['trivia_categories']
     categories.append({'id':None, 'name':'random'})
     return random.sample(categories, 4)
-          
-                      
 
 if 'start_game' not in st.session_state:
     st.session_state['start_game'] = False
-    
-if 'selected_categories'not in st.session_state or not st.session_state['start_game']:
+
+if 'selected_categories' not in st.session_state:
     st.session_state['selected_categories'] = get_random_categories()
     st.session_state['start_game'] = True
-
-        
+    
 if 'category' not in st.session_state:
     st.session_state['category'] = None 
            
@@ -130,11 +125,14 @@ def process_answer():
             #if there are no lives left in this session end this round otherwise restart
         if st.session_state['lives'] <= 0:
             st.write(f"Final Score: {st.session_state['score']}")
+            
+            
 
             #Check if a new highscore is achieved and congratulate if done
             if st.session_state['score'] > st.session_state['highscore']:
                 st.session_state['highscore'] = st.session_state['score']
                 st.write(f"Congratulations you have a new Highscore. Your new Highscore is: {st.session_state['highscore']}")
+            st.session_state['score'] = 0
             st.session_state['start_game'] = False
         else:
             get_new_question() #get a new question
@@ -163,7 +161,11 @@ if st.session_state['start_game']:
                 process_answer()
 
 
-#Display score and highscore
-st.write(f'Your score:{st.session_state["score"]}')
-st.write(f'Your Highscore is:{st.session_state["highscore"]}')
+#Display lives, score and highscore
+if 'lives' in st.session_state:
+    hearts = st.session_state['lives']
+    heart_symbol = '\U00002764'
+    st.write(f'{heart_symbol * hearts}')
 
+st.write(f'Your Score: {st.session_state["score"]}')
+st.write(f'Your Highscore is: {st.session_state["highscore"]}')
