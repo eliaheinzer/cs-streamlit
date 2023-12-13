@@ -133,6 +133,7 @@ def process_answer():
                 st.session_state['highscore'] = st.session_state['score']
                 st.write(f"Congratulations you have a new Highscore. Your new Highscore is: {st.session_state['highscore']}")
             st.session_state['score'] = 0
+            st.session_state['selected_categories'] = get_random_categories()
             st.session_state['start_game'] = False
         else:
             get_new_question() #get a new question
@@ -152,7 +153,6 @@ if st.button("Start Game"):
     st.session_state['question_counter'] = 0
     #get question
     get_new_question()
-
 
 #actual process of the code starts
 if st.session_state['start_game']:
