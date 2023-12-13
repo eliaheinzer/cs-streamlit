@@ -77,6 +77,8 @@ def get_new_question():
         #Informing user about trying again
         if st.session_state['api_result'] == False:
             st.error("You were too fast, try again")
+            #stopping game to remove potential bug, if user tries to play with the old displayed question
+            st.session_state['start_game'] = False
             return
 
     #breaking up the results packet
@@ -96,7 +98,10 @@ def get_new_question():
 
     #getting rid of the fixed order
     random.shuffle(st.session_state["answers"])
+
     st.session_state['selected_answer'] = None
+
+    #Cycling through the 5 questions
     st.session_state['question_counter'] += 1
     if st.session_state['question_counter'] == 5:
         st.session_state['question_counter'] = 0
